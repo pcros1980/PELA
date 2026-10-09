@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PELA Demo – Post-Entry Language Assessment</title>
+<meta name="description" content="A demonstration Post-Entry Language Assessment (PELA) built as a single static HTML file. Demo items only; not a validated test.">
+<style>
+  :root{
+    --purple:#51247a; --purple-dark:#3b1a59; --navy:#21295c; --teal:#1c7293; --teal-dark:#065a82;
+    --tint:#eaf4f6; --ink:#1b2430; --muted:#5b6b79; --gold:#e1a83a; --line:#d5dde3;
+    --ok:#2e7d4f; --warn:#b7791f; --bad:#a63d40;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#f6f8fa;line-height:1.5}
+  header{background:linear-gradient(90deg,var(--purple-dark),var(--purple));color:#fff;padding:18px 20px}
+  header .wrap{max-width:860px;margin:0 auto}
+  header h1{margin:0;font-family:Cambria,Georgia,serif;font-size:1.5rem}
+  header p{margin:2px 0 0;color:#d9c9ea;font-size:.95rem}
+  main{max-width:860px;margin:0 auto;padding:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  h2{font-family:Cambria,Georgia,serif;color:var(--navy);margin:0 0 6px;font-size:1.4rem}
+  h3{color:var(--teal-dark);margin:0 0 8px;font-size:1.05rem}
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-weight:700;font-size:.78rem;color:var(--teal)}
+  .muted{color:var(--muted)}
+  .notice{background:var(--tint);border-radius:8px;padding:10px 14px;font-size:.92rem;color:var(--navy)}
+  .progress{height:8px;background:#e3e8ec;border-radius:99px;overflow:hidden;margin:0 0 18px}
+  .progress>div{height:100%;background:var(--purple);width:0;transition:width .3s}
+  .q{padding:14px 0;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:0}
+  .q p{margin:0 0 8px;font-weight:600}
+  .opt{display:block;padding:8px 12px;margin:6px 0;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+  .opt:hover{background:var(--tint)}
+  .opt input{margin-right:10px;accent-color:var(--purple)}
+  .passage{background:var(--tint);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+  button,.btn{font:inherit;font-weight:600;border:0;border-radius:8px;padding:10px 20px;cursor:pointer;background:var(--purple);color:#fff}
+  button:hover{background:var(--purple-dark)}
+  button.secondary{background:#fff;color:var(--purple);border:1px solid var(--purple)}
+  button.secondary:hover{background:var(--tint)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px}
+  input[type=text]{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;width:100%;max-width:340px}
+  textarea{font:inherit;width:100%;min-height:200px;padding:12px;border:1px solid var(--line);border-radius:8px;resize:vertical}
+  .count{font-size:.9rem;color:var(--muted)}
+  .count.ok{color:var(--ok)}
+  .scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0}
+  .score{border-radius:10px;padding:14px;background:var(--tint)}
+  .score .n{font-family:Cambria,Georgia,serif;font-size:1.9rem;font-weight:700;color:var(--teal-dark)}
+  .band{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.82rem;font-weight:700;color:#fff}
+  .b-ok{background:var(--ok)} .b-warn{background:var(--warn)} .b-bad{background:var(--bad)}
+  .rev{padding:10px 0;border-top:1px solid var(--line);font-size:.95rem}
+  .right{color:var(--ok);font-weight:700} .wrong{color:var(--bad);font-weight:700}
+  .hidden{display:none}
+  footer{max-width:860px;margin:0 auto;padding:0 20px 30px;font-size:.85rem;color:var(--muted)}
+  table.ind{border-collapse:collapse;width:100%;font-size:.95rem}
+  table.ind td{padding:6px 8px;border-top:1px solid var(--line)}
+  @media print{header,.row,footer,#logbox{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>PELA Demo</h1>
+  <p>Post-Entry Language Assessment · a single static HTML file</p>
+</div></header>
+
+<main>
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+
+  <!-- 0. Welcome -->
+  <section id="s0" class="card">
+    <div class="eyebrow">Welcome</div>
+    <h2>Academic English check-in</h2>
+    <p>This short activity has four parts: <b>vocabulary</b>, <b>grammar</b>, <b>reading</b> and a <b>short writing task</b>. It takes about 20 minutes.</p>
+    <p class="notice"><b>Demonstration only.</b> The items are illustrative and have not been validated, so the results must not be used for placement or high-stakes decisions. Nothing you enter leaves your browser unless you choose to download your results.</p>
+    <p><label for="pid"><b>Participant code</b> (optional; use a code, not your name)</label><br>
+      <input id="pid" type="text" maxlength="40" placeholder="e.g. DEMO-01"></p>
+    <div class="row"><span></span><button id="start">Start</button></div>
+  </section>
+
+  <!-- 1-3. MCQ parts -->
+  <section id="s1" class="card hidden"></section>
+  <section id="s2" class="card hidden"></section>
+  <section id="s3" class="card hidden"></section>
+
+  <!-- 4. Writing -->
+  <section id="s4" class="card hidden">
+    <div class="eyebrow">Part 4 of 4 · Writing</div>
+    <h2>Short argument</h2>
+    <p><b>Some people say students should be allowed to use AI tools freely in university assignments. To what extent do you agree?</b></p>
+    <p class="muted">Write 120–200 words in an academic style. Give reasons and at least one example.</p>
+    <textarea id="essay" aria-label="Your response" placeholder="Start typing here…"></textarea>
+    <div class="row"><span class="count" id="wc">0 words</span>
+      <span><button class="secondary" id="back4">Back</button> <button id="finish">Submit and see results</button></span></div>
+  </section>
+
+  <!-- 5. Results -->
+  <section id="s5" class="hidden">
+    <div class="card">
+      <div class="eyebrow">Results</div>
+      <h2>Your profile</h2>
+      <p class="notice" id="disc"></p>
+      <div class="scores" id="scores"></div>
+      <h3>Suggested next steps</h3>
+      <ul id="recs"></ul>
+    </div>
+    <div class="card">
+      <h3>Writing sample: descriptive indicators</h3>
+      <p class="muted">These are counts, not a grade. A human reader (or a rubric) would judge quality.</p>
+      <table class="ind" id="ind"></table>
+    </div>
+    <div class="card">
+      <h3>Review your answers</h3>
+      <div id="review"></div>
+    </div>
+    <div class="card" id="logbox">
+      <h3>Data export</h3>
+      <p class="muted">Every interaction is logged with a timestamp and session ID so the whole session is reproducible. Download it to inspect or analyse.</p>
+      <div class="row" style="justify-content:flex-start">
+        <button id="dl">Download results + log (JSON)</button>
+        <button class="secondary" onclick="window.print()">Print results</button>
+        <button class="secondary" id="restart">Start again</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Built through natural-language prompting (“vibecoding”) as a teaching demo. Items written for demonstration; not a validated instrument.</footer>
+
+<script>
+"use strict";
+/* ---------- Item bank (each part is plain data, so it can be edited without touching the logic) ---------- */
+const PARTS = [
+  { id:"vocab", title:"Vocabulary in context", n:1,
+    instr:"Choose the option closest in meaning to the <i>italicised</i> word or phrase.",
+    items:[
+      {q:"The results were <i>consistent with</i> earlier findings.", o:["in agreement with","different from","unrelated to","hidden by"], a:0, e:"“Consistent with” means compatible with or in agreement with."},
+      {q:"Researchers must <i>mitigate</i> the risk of bias.", o:["measure","reduce","ignore","explain"], a:1, e:"To mitigate is to make something less severe."},
+      {q:"The data are <i>inconclusive</i>.", o:["very detailed","clearly wrong","not enough to give a clear answer","freely available"], a:2, e:"Inconclusive evidence does not settle the question."},
+      {q:"The author <i>advocates</i> a longer trial period.", o:["argues for","argues against","has completed","is unsure about"], a:0, e:"To advocate is to publicly support or recommend."},
+      {q:"The two terms are often used <i>interchangeably</i>.", o:["incorrectly","rarely","as if they mean the same thing","in opposite ways"], a:2, e:"Interchangeable terms can be swapped without changing meaning."},
+      {q:"The findings have important <i>implications</i> for policy.", o:["possible consequences","hidden errors","historical causes","detailed methods"], a:0, e:"Implications are likely or possible effects or meanings."},
+      {q:"This is a <i>robust</i> method.", o:["new and untested","expensive","strong and reliable in varied conditions","simple to teach"], a:2, e:"A robust method holds up under different conditions."},
+      {q:"The sample was <i>heterogeneous</i>.", o:["very small","made up of varied types","randomly selected","carefully matched"], a:1, e:"Heterogeneous means diverse in kind; the opposite of homogeneous."}
+    ]},
+  { id:"grammar", title:"Grammar and sentence accuracy", n:2,
+    instr:"Choose the best answer for each item.",
+    items:[
+      {q:"Neither the teachers nor the principal ____ aware of the change.", o:["were","was","have been","are being"], a:1, e:"With “neither…nor”, the verb agrees with the nearer subject (“principal”, singular)."},
+      {q:"The number of students who enrol in online courses ____ increased.", o:["have","has","are","were"], a:1, e:"“The number of” takes a singular verb."},
+      {q:"____ the sample was small, the effect was clear.", o:["Despite of","In spite the","Although","Despite that"], a:2, e:"“Although” introduces a clause; “despite” needs a noun phrase (“despite the small sample”)."},
+      {q:"If the survey ____ distributed earlier, more responses would have been received.", o:["was","had been","would be","has been"], a:1, e:"Third conditional: past perfect in the if-clause."},
+      {q:"Which part contains an error?<br><i>The results of the study (A) suggests (B) that vocabulary size (C) is important (D).</i>", o:["A","B","C","D"], a:1, e:"The subject is “results” (plural), so “suggest”."},
+      {q:"Which sentence is most appropriate in academic writing?", o:["Loads of studies show this is true.","A growing body of research indicates that this is the case.","Everyone knows this is true.","It’s totally obvious, isn’t it?"], a:1, e:"Option 2 is formal, hedged and evidence-oriented."}
+    ]},
+  { id:"reading", title:"Reading", n:3,
+    instr:"Read the passage, then answer the questions.",
+    passage:"Universities have long relied on lectures to deliver content, yet evidence about their effectiveness is mixed. Some studies report that students retain more when they discuss material and solve problems during class; others find little difference once prior knowledge is accounted for. This inconsistency may partly reflect how “active learning” is defined, since the term covers everything from brief polls to extended group projects. Consequently, comparisons across studies should be treated cautiously, and institutions are advised to evaluate changes in their own contexts before adopting them widely.",
+    items:[
+      {q:"What is the main point of the passage?", o:["Lectures should be abolished.","Evidence on active learning is inconsistent, partly because of how it is defined.","Group projects are better than polls.","Prior knowledge is the only factor that matters."], a:1, e:"The passage links mixed evidence to differing definitions."},
+      {q:"“This inconsistency” refers to…", o:["the length of lectures","differences in prior knowledge","the mixed findings across studies","the cost of active learning"], a:2, e:"“This inconsistency” points back to the mixed/contradictory findings."},
+      {q:"What is the writer’s attitude to comparing studies?", o:["Enthusiastic","Cautious","Dismissive","Indifferent"], a:1, e:"“Should be treated cautiously” signals caution."},
+      {q:"Which would the writer most likely support?", o:["Adopting new methods immediately everywhere","Testing new approaches in the local context first","Ignoring research on lectures","Replacing all polls with projects"], a:1, e:"The final clause advises local evaluation before wide adoption."}
+    ]}
+];
+const BANDS = [
+  {min:.75, cls:"b-ok",   label:"On track"},
+  {min:.5,  cls:"b-warn", label:"Some support recommended"},
+  {min:0,   cls:"b-bad",  label:"Priority support recommended"}
+];
+const RECS = {
+  vocab:  "Vocabulary: explore academic phrases in context with a corpus tool (e.g. concordance lines of a target word) and keep a personal phrase bank.",
+  grammar:"Grammar: join a short sentence-level accuracy workshop; focus on agreement, conditionals and clause linking.",
+  reading:"Reading: practise identifying main claims, reference words (this/that/these) and the writer’s stance in short journal-style extracts.",
+  writing:"Writing: book a writing consultation; bring your draft and compare your phrasing with model texts from your discipline."
+};
+const HEDGES = ["may","might","could","perhaps","possibly","suggest","suggests","appear","appears","likely","tend","tends","generally","arguably","somewhat"];
+const BOOSTERS = ["clearly","obviously","definitely","certainly","always","never","undoubtedly","must","prove","proves","of course"];
+const AWL_SAMPLE = ["analyse","assess","concept","consistent","context","data","evidence","factor","indicate","interpret","issue","method","significant","sources","theory","therefore","However","furthermore","despite","whereas"];
+
+/* ---------- State and logging ---------- */
+const sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now())+Math.random().toString(16).slice(2);
+const state = { sid, participant:"", answers:{}, essay:"", startedAt:null };
+const LOG = [];
+function log(event, detail){ LOG.push({t:new Date().toISOString(), session:sid, event, detail:detail||null}); }
+let shownAt = 0;
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+function show(id){
+  ["s0","s1","s2","s3","s4","s5"].forEach(s=>$(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+  const idx = Number(id.slice(1));
+  $("bar").style.width = (idx/5*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+  shownAt = performance.now();
+  log("screen_shown", id);
+}
+function wordsOf(t){ return (t.toLowerCase().match(/[a-z’']+/g)||[]); }
+
+/* ---------- Build MCQ screens ---------- */
+PARTS.forEach((p,pi)=>{
+  const sec = $("s"+p.n);
+  let h = `<div class="eyebrow">Part ${p.n} of 4</div><h2>${p.title}</h2><p class="muted">${p.instr}</p>`;
+  if(p.passage) h += `<div class="passage">${p.passage}</div>`;
+  p.items.forEach((it,i)=>{
+    h += `<div class="q"><p>${i+1}. ${it.q}</p>` +
+      it.o.map((o,oi)=>`<label class="opt"><input type="radio" name="${p.id}_${i}" value="${oi}"> ${o}</label>`).join("") + `</div>`;
+  });
+  h += `<div class="row"><span class="count" id="c${p.n}"></span><span>` +
+       (p.n>1?`<button class="secondary" data-back="${p.n}">Back</button> `:"") +
+       `<button data-next="${p.n}">Next</button></span></div>`;
+  sec.innerHTML = h;
+  sec.addEventListener("change", e=>{
+    if(e.target.type!=="radio") return;
+    const [pid,qi] = e.target.name.split("_");
+    const item = PARTS.find(x=>x.id===pid).items[Number(qi)];
+    const choice = Number(e.target.value);
+    state.answers[e.target.name] = choice;
+    log("answer", {item:e.target.name, choice, correct:choice===item.a, ms:Math.round(performance.now()-shownAt)});
+    const done = p.items.filter((_,i)=>state.answers[p.id+"_"+i]!==undefined).length;
+    $("c"+p.n).textContent = `${done} of ${p.items.length} answered`;
+  });
+});
+
+/* ---------- Navigation ---------- */
+$("start").onclick = ()=>{
+  state.participant = $("pid").value.trim();
+  state.startedAt = new Date().toISOString();
+  log("start", {participant:state.participant});
+  show("s1");
+};
+document.addEventListener("click", e=>{
+  const n = e.target.dataset && e.target.dataset.next, b = e.target.dataset && e.target.dataset.back;
+  if(n){ log("section_complete", "part"+n); show("s"+(Number(n)+1)); }
+  if(b){ show("s"+(Number(b)-1)); }
+});
+$("back4").onclick = ()=>show("s3");
+$("essay").addEventListener("input", ()=>{
+  const w = wordsOf($("essay").value).length;
+  $("wc").textContent = w+" words";
+  $("wc").className = "count"+((w>=120&&w<=200)?" ok":"");
+});
+$("essay").addEventListener("focus", ()=>log("writing_focus"));
+
+/* ---------- Scoring and results ---------- */
+function band(frac){ return BANDS.find(b=>frac>=b.min); }
+$("finish").onclick = ()=>{
+  state.essay = $("essay").value;
+  const w = wordsOf(state.essay);
+  log("submit", {words:w.length});
+  const scores = PARTS.map(p=>{
+    const got = p.items.filter((it,i)=>state.answers[p.id+"_"+i]===it.a).length;
+    return {id:p.id, title:p.title, got, total:p.items.length, frac:got/p.items.length};
+  });
+  $("scores").innerHTML = scores.map(s=>{
+    const b = band(s.frac);
+    return `<div class="score"><div class="muted">${s.title}</div><div class="n">${s.got}/${s.total}</div><span class="band ${b.cls}">${b.label}</span></div>`;
+  }).join("");
+  const recs = scores.filter(s=>s.frac<.75).map(s=>RECS[s.id]);
+  if(w.length<80) recs.push("Writing: your sample was too short to review. Aim for 120–200 words next time. "+RECS.writing);
+  else if(w.length<120||w.length>200) recs.push("Writing: aim for 120–200 words so that the sample can be compared fairly.");
+  if(!recs.length) recs.push("No extra support flagged by this demo. Keep reading widely in your discipline.");
+  $("recs").innerHTML = recs.map(r=>`<li>${r}</li>`).join("");
+  $("disc").textContent = "Demonstration results from unvalidated items. They show how a PELA could report back; they are not a placement decision.";
+
+  const sentences = state.essay.split(/[.!?]+/).filter(s=>s.trim()).length;
+  const lc = w.map(x=>x.replace(/[’']/g,"'"));
+  const cnt = list => lc.filter(x=>list.map(y=>y.toLowerCase()).includes(x)).length;
+  const rows = [
+    ["Words", w.length],
+    ["Sentences", sentences],
+    ["Average sentence length (words)", sentences ? (w.length/sentences).toFixed(1) : "–"],
+    ["Hedging devices (small word list)", cnt(HEDGES)],
+    ["Boosters (small word list)", cnt(BOOSTERS)],
+    ["Academic words from a tiny sample list", cnt(AWL_SAMPLE)]
+  ];
+  $("ind").innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td></tr>`).join("");
+
+  let rev = "";
+  PARTS.forEach(p=>p.items.forEach((it,i)=>{
+    const ch = state.answers[p.id+"_"+i], ok = ch===it.a;
+    rev += `<div class="rev"><div><b>${p.title} ${i+1}.</b> ${it.q}</div>
+      <div>${ok?'<span class="right">✓ Correct</span>':'<span class="wrong">✗ Not quite</span>'} Your answer: ${ch===undefined?'<i>no answer</i>':it.o[ch]}${ok?'':' · Correct: <b>'+it.o[it.a]+'</b>'}</div>
+      <div class="muted">${it.e}</div></div>`;
+  }));
+  $("review").innerHTML = rev;
+  state.scores = scores;
+  show("s5");
+};
+
+$("dl").onclick = ()=>{
+  const out = { session:sid, participant:state.participant, startedAt:state.startedAt, scores:state.scores,
+                answers:state.answers, writing:state.essay, log:LOG };
+  const blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "pela-demo-"+sid.slice(0,8)+".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  log("download");
+};
+$("restart").onclick = ()=>location.reload();
+</script>
+</body>
+</html>
